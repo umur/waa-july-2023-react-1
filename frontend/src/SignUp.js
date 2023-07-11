@@ -1,32 +1,99 @@
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
 
 
-const SignUp = ()=>{
+const SignUp = () => {
 
-    return (<div className="SignUp">
-          <h1>Signup</h1>
-          <form id="signup-form">
-    <label for="email">Email:</label>
-    <input type="email" id="signup-email" required />
-    <br />
-    <label for="firstName">First Name:</label>
-    <input type="text" id="signup-firstname" required />
-    <br />
-    <label for="lastName">Last Name:</label>
-    <input type="text" id="signup-lastname" required />
-    <br />
-    <label for="city">City:</label>
-    <input type="text" id="signup-city" required />
-    <br />
-    <label for="zip">ZIP:</label>
-    <input type="text" id="signup-zip" required /> 
-    <br />
-    <label for="password">Password:</label>
-    <input type="password" id="signup-password" required />
-    <br />
-    <button type="submit">Signup</button>
-    </form>
-          </div>)
+      const [signUpState, setSignUpState] = useState({
+            email: "",
+            password: "",
+            firstname:"",
+            lastname:"",
+            city:"",
+            zip:""
+          });
+          const onCreateButtonClicked = (event) => {
+            const copy = { ...signUpState };
+        
+            axios.post("http://localhost:8080/uaa/signup", copy, {
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            }).then(function (response) {
+              if (response.status == 200) {
+                console.log("logged in");
+                localStorage.setItem("accessToken", JSON.stringify(response.data.accessToken));
+                localStorage.setItem("refreshToken", JSON.stringify(response.data.refreshToken));
+              }
+              console.log(response);
+            })
+              .catch(function (error) {
+                console.log(error);
+              });
+        
+          }
+          const onChanged = (event) => {
+            const copy = { ...signUpState };
+            copy[event.target.name] = event.target.value;
+            setSignUpState(copy);
+          }
+
+      return (<div className="SignUp">
+            <h1>Signup</h1>
+            First Name:
+            <input
+                  type="text"
+                  value={signUpState.firstname}
+                  name="firstname"
+                  onChange={onChanged}
+            />
+            <br />
+            Last Name:
+            <input
+                  type="text"
+                  value={signUpState.lastname}
+                  name="lastname"
+                  onChange={onChanged}
+            />
+            <br />
+            Email:
+            <input
+                  type="text"
+                  value={signUpState.email}
+                  name="email"
+                  onChange={onChanged}
+            />
+            <br />
+            Password:
+            <input
+                  type="text"
+                  value={signUpState.password}
+                  name="password"
+                  onChange={onChanged}
+            />
+            <br />
+            City:
+            <input
+                  type="text"
+                  value={signUpState.city}
+                  name="city"
+                  onChange={onChanged}
+            />
+            <br />
+            Zip:
+            <input
+                  type="text"
+                  value={signUpState.zip}
+                  name="zip"
+                  onChange={onChanged}
+            />
+            <br />
+            <input
+                  type="button"
+                  onClick={onCreateButtonClicked}
+                  value="SignUp" />
+
+      </div >)
 }
 
 

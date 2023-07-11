@@ -1,20 +1,63 @@
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
+
+const SignIn = () => {
+
+  const [signInState, setSignInState] = useState({
+    email: "",
+    password: ""
+  });
+  const onCreateButtonClicked = (event) => {
+    const copy = { ...signInState };
+
+    axios.post("http://localhost:8080/uaa/signin", copy, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(function (response) {
+      if (response.status == 200) {
+        console.log("logged in");
+        localStorage.setItem("accessToken", JSON.stringify(response.data.accessToken));
+        localStorage.setItem("refreshToken", JSON.stringify(response.data.refreshToken));
+      }
+      console.log(response);
+    })
+      .catch(function (error) {
+        console.log(error);
+      });
+
+  }
+  const onChanged = (event) => {
+    const copy = { ...signInState };
+    copy[event.target.name] = event.target.value;
+    setSignInState(copy);
+  }
 
 
-const SignIn = ()=>{
+  return (<div className="SignIn">
+    <h1>Signin</h1>
+    Email:
+    <input
+      type="text"
+      value={signInState.email}
+      name="email"
+      onChange={onChanged}
+    />
+    <br />
+    Password:
+    <input
+      type="text"
+      value={signInState.password}
+      name="password"
+      onChange={onChanged}
+    />
+    <br />
+    <input
+      type="button"
+      onClick={onCreateButtonClicked}
+      value="Signin" />
 
-    return (<div className="SignIn">
-          <h1>Signin</h1>
-          <form id="signin-form">
-            <label for="email">Email:</label>
-            <input type="email" id="email" required />
-            <br />
-            <label for="password">Password:</label>
-            <input type="password" id="password" required /> 
-            <br />
-            <button type="submit">Signin</button>
-          </form>
-          </div>)
+  </div>)
 }
 
 

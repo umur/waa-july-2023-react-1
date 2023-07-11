@@ -13,7 +13,7 @@ function App() {
     setShowComponent(!showComponent);
   };
   return (
-<div>
+<div className='App'>
 
       {showComponent ? <SignIn /> : <SignUp />}
 
