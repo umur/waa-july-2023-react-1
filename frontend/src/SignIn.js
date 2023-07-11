@@ -8,6 +8,10 @@ const SignIn = () => {
     password: ""
   });
   const onCreateButtonClicked = (event) => {
+
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    
     const copy = { ...signInState };
 
     axios.post("http://localhost:8080/uaa/signin", copy, {
