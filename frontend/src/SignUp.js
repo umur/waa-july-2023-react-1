@@ -7,36 +7,36 @@ const SignUp = () => {
       const [signUpState, setSignUpState] = useState({
             email: "",
             password: "",
-            firstname:"",
-            lastname:"",
-            city:"",
-            zip:""
-          });
-          const onCreateButtonClicked = (event) => {
+            firstname: "",
+            lastname: "",
+            city: "",
+            zip: ""
+      });
+      const onCreateButtonClicked = async (event) => {
             const copy = { ...signUpState };
-        
-            axios.post("http://localhost:8080/uaa/signup", copy, {
-              headers: {
-                'Content-Type': 'application/json'
-              }
+
+            await axios.post("http://localhost:8080/uaa/signup", copy, {
+                  headers: {
+                        'Content-Type': 'application/json'
+                  }
             }).then(function (response) {
-              if (response.status == 200) {
-                console.log("logged in");
-                localStorage.setItem("accessToken", JSON.stringify(response.data.accessToken));
-                localStorage.setItem("refreshToken", JSON.stringify(response.data.refreshToken));
-              }
-              console.log(response);
+                  if (response.status === 200) {
+                        console.log("logged in");
+                        localStorage.setItem("accessToken", JSON.stringify(response.data.accessToken));
+                        localStorage.setItem("refreshToken", JSON.stringify(response.data.refreshToken));
+                  }
+                  console.log(response);
             })
-              .catch(function (error) {
-                console.log(error);
-              });
-        
-          }
-          const onChanged = (event) => {
+                  .catch(function (error) {
+                        console.log(error);
+                  });
+
+      }
+      const onChanged = (event) => {
             const copy = { ...signUpState };
             copy[event.target.name] = event.target.value;
             setSignUpState(copy);
-          }
+      }
 
       return (<div className="SignUp">
             <h1>Signup</h1>

@@ -7,19 +7,19 @@ const SignIn = () => {
     email: "",
     password: ""
   });
-  const onCreateButtonClicked = (event) => {
+  const onCreateButtonClicked = async (event) => {
 
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
-    
+
     const copy = { ...signInState };
 
-    axios.post("http://localhost:8080/uaa/signin", copy, {
+    await axios.post("http://localhost:8080/uaa/signin", copy, {
       headers: {
         'Content-Type': 'application/json'
       }
     }).then(function (response) {
-      if (response.status == 200) {
+      if (response.status === 200) {
         console.log("logged in");
         localStorage.setItem("accessToken", JSON.stringify(response.data.accessToken));
         localStorage.setItem("refreshToken", JSON.stringify(response.data.refreshToken));
