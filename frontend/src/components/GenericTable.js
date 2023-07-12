@@ -1,6 +1,4 @@
 import React from "react";
-import './bootstrap.min.css';
-import './font-awesome.css';
 
 
 export default function GenericTable(props) {
