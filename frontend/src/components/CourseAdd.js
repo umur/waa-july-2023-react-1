@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2'
 
 const CourseAdd = () => {
 
@@ -16,13 +17,26 @@ const CourseAdd = () => {
     try {
       const course = { name, code };
       await addCourse(course);
-      const shouldAddAnotherCourse = window.confirm("\nCourse added successfully.\n\nWould you like to add another course?");
-      if (!shouldAddAnotherCourse) {
-        navigate('/');
-      }
-      resetForm();
+      Swal.fire({
+        title: 'Course added successfully',
+        text: "Would you like to add another course?",
+        icon: 'success',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, I want to add another'
+      }).then((result) => {
+        if (!result.isConfirmed) {
+          navigate('/');
+        }
+        resetForm();
+      })
     } catch (error) {
-      alert("An error occurred while adding the course, please try again");
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'An error occurred while adding the course, please try again',
+      })
       console.error(error);
     } finally {
       setIsPending(false);
@@ -56,7 +70,7 @@ const CourseAdd = () => {
           <input type="text" className="form-control" id="codeInput" value={code} onChange={e => setCode(e.target.value)} required />
         </div>
 
-        {isPending ? <button type="submit" className="btn btn-disabled">Adding Course...</button> :
+        {isPending ? <button type="submit" className="btn btn-secondary" disabled>Adding Course...</button> :
           <button type="submit" className="btn btn-primary">Add Course</button>}
 
       </form>

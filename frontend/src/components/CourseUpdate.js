@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useParams } from 'react-router-dom';
+import Swal from 'sweetalert2'
 
 const CourseUpdate = () => {
 
@@ -29,10 +30,18 @@ const CourseUpdate = () => {
         try {
             const updatedCourse = {name, code };
             await updateCourse(updatedCourse);
-            window.alert("\nCourse updated successfully.");
+            Swal.fire(
+                'Success!',
+                'The course has been updated successfully.',
+                'success'
+            )
             navigate("/");
         } catch (error) {
-            alert("An error occurred while updating the course, please try again");
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'An error occurred while updating the course, please try again',
+            })
             console.error(error);
         } finally {
             setIsPending(false);

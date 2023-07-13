@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useParams } from 'react-router-dom';
+import Swal from 'sweetalert2'
 
 const StudentUpdate = () => {
     const { id } = useParams();
@@ -35,10 +36,18 @@ const StudentUpdate = () => {
         try {
             const updatedStudent = {studentId, firstName, lastName, email, major };
             await updateStudent(updatedStudent);
-            window.alert("\nStudent updated successfully.");
+            Swal.fire(
+                'Success!',
+                'The student has been updated successfully.',
+                'success'
+            )
             navigate("/showStudents");
         } catch (error) {
-            alert("An error occurred while updating the student, please try again");
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'An error occurred while updating the student, please try again',
+            })
             console.error(error);
         } finally {
             setIsPending(false);
@@ -86,7 +95,7 @@ const StudentUpdate = () => {
                     </div>
 
                     {isPending ? 
-                    <button type="submit" className="btn btn-disabled">Updating Student...</button> : 
+                    <button type="submit" className="btn btn-secondary" disabled>Updating Student...</button> : 
                     <button type="submit" className="btn btn-primary">Update Student</button>}
 
                 </form>

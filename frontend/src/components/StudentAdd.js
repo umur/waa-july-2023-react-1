@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2'
 
 const StudentAdd = () => {
 
@@ -20,13 +21,31 @@ const StudentAdd = () => {
     try {
       const student = { studentId, firstName, lastName, email, major };
       await addStudent(student);
-      const shouldAddAnotherStudent = window.confirm("\nStudent added successfully.\n\nWould you like to add another student?");
-      if (!shouldAddAnotherStudent) {
-        navigate('/showStudents');
-      }
-      resetForm();
+      Swal.fire({
+        title: 'Student added successfully',
+        text: "Would you like to add another student?",
+        icon: 'success',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, I want to add another'
+      }).then((result) => {
+        if (!result.isConfirmed) {
+          navigate('/showStudents');
+        }
+        resetForm();
+      })
+      // const shouldAddAnotherStudent = window.confirm("\nStudent added successfully.\n\nWould you like to add another student?");
+      // if (!shouldAddAnotherStudent) {
+      //   navigate('/showStudents');
+      // }
+      // resetForm();
     } catch (error) {
-      alert("An error occurred while adding the student, please try again");
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'An error occurred while adding the student, please try again',
+      })
       console.error(error);
     } finally {
       setIsPending(false);
@@ -78,7 +97,7 @@ const StudentAdd = () => {
             <input type="text" className="form-control" id="majorInput" value={major} onChange={e => setMajor(e.target.value)} required />
             </div>
 
-            {isPending ? <button type="submit" className="btn btn-disabled">Adding Student...</button> :
+            {isPending ? <button type="submit" className="btn btn-secondary" disabled>Adding Student...</button> :
             <button type="submit" className="btn btn-primary">Add Student</button>}
 
         </form>
