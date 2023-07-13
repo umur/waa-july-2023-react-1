@@ -1,44 +1,72 @@
+import axios from 'axios';
 import './App.css';
+import React, { useState, useEffect } from "react";
+import './AddStudent';
+import AddStudent from './AddStudent';
+import DeleteStudent from './DeleteStudent';
+import UpdateStudent from './UpdateStudent';
+
 
 function App() {
+  const [studentState, setStudent] = useState('');
+
+  const getStudent = async () => {
+    const result = await axios.get(`http://localhost:8090/students`);
+    setStudent(result.data);
+  }
+
+  useEffect(() => {
+    getStudent();
+  }, [])
+
+  const addStudent=(student)=>{
+    setStudent((prevState)=>[...prevState, student]);
+  }
+
+  // const updateStudent=(student)=>{
+  //   setStudent((prevState)=>[...prevState, student]);
+  // }
+  const updateStudent=(student)=>{
+    console.log(student);
+    // setStudent((prevState)=>[...prevState, student]);
+  }
+
+  const deletingStudent=(student)=>{
+    setStudent((prevState)=>[...prevState, student]);
+  }
+
   return (
-    <div className="App">
-      <h1>
-        Lab 2 Student And Courses
-      </h1>
-      <div>
-        <input
-          type="text" id="txtId" placeholder="enter Major to get" />
-
-        <button id="getByMajor">GetByMajor</button>
-        <div id="output">
-          <br></br>
-          <table border="1" align='center'>
-            <tr>
-              <th>Id</th>
-              <th>FirstName</th>
-              <th>LastName</th>
-              <th>Email</th>
-              <th>Major</th>
-              <th>CoursesTaken</th>
-            </tr>
-            <tbody id="myTableBody">
-
-            </tbody>
-          </table>
-          <br></br>
-          <div>
-            <input type="text" id="id" placeholder="Id" />
-            <input type="text" id="firstName" placeholder="First Name" />
-            <input type="text" id="lastName" placeholder="Last Name" />
-            <input type="text" id="email" placeholder="Email" />
-            <input type="text" id="major" placeholder="Major" />
-            <input type="text" id="coursesTaken" placeholder="Courses Taken" />
-            <button id="addStudent">Add Student</button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div>
+      <AddStudent onStudentAdded={addStudent}/>
+      <br></br>
+      <br></br>
+      <DeleteStudent studentToDelete={deletingStudent}/>
+      <br></br>
+      <UpdateStudent onUpdatedStudent={updateStudent}/>
+      <br></br>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>FirstName</th>
+            <th>LastName</th>
+            <th>Major</th>
+            <th>CoursesTaken</th>
+          </tr>
+        </thead>
+        <tbody>
+        {studentState && studentState.map((item) => (
+        <tr key={item.id}>
+          <td>{item.id}</td>
+          <td>{item.firstName}</td>
+          <td>{item.lastName}</td>
+          <td>{item.major}</td>
+          <td>{item.coursesTaken}</td>
+        </tr>
+      ))}
+        </tbody>
+      </table>
+    </div >
 
   );
 }
