@@ -3,7 +3,7 @@ ul li {
   cursor: pointer;
 }
 
-/* #updateCourseDiv {
-  display: none;
+/* a.nav-link:hover{
+  border-bottom: 1px dotted black;
+  border-top: 1px dotted black;
 } */
-

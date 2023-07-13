@@ -39,8 +39,10 @@ const CourseAdd = () => {
   }
 
   return (
-    <div id="createCourseDiv" className="container mt-5">
+    <div id="createCourseDiv" className="container">
       <h2>Create Course</h2>
+
+      <div className="mt-5">
 
       <form id="createCourseForm" onSubmit={handleCourseCreate}>
 
@@ -58,6 +60,7 @@ const CourseAdd = () => {
           <button type="submit" className="btn btn-primary">Add Course</button>}
 
       </form>
+      </div>
     </div>
   );
 }

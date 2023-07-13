@@ -3,8 +3,8 @@ import Courses from "./Courses";
 const Home = () => {
   return (
     <div className="home">
-      <Courses />
       <div className="container">
+        <Courses />
       </div>
     </div>
   );

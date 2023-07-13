@@ -1,9 +1,9 @@
 const CourseList = ({ courses, title, handleUpdate, handleDelete }) => {
 
   return (
-    <div className="container">
+    <div>
       <h2>{title}</h2>
-      <div id="allCoursesDiv" className="mt-5">
+      <div className="mt-5">
         <table className="table">
           <thead>
             <tr>
@@ -14,7 +14,7 @@ const CourseList = ({ courses, title, handleUpdate, handleDelete }) => {
               <th scope="col">Delete</th>
             </tr>
           </thead>
-          <tbody id="coursesTableBody">
+          <tbody>
             {
               courses.map(course => (
                 <tr key={course.id}>

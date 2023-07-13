@@ -29,7 +29,7 @@ const CourseUpdate = () => {
         try {
             const updatedCourse = {name, code };
             await updateCourse(updatedCourse);
-            window.confirm("\nCourse updated successfully.");
+            window.alert("\nCourse updated successfully.");
             navigate("/");
         } catch (error) {
             alert("An error occurred while updating the course, please try again");
@@ -45,8 +45,10 @@ const CourseUpdate = () => {
 
     return (
         <>
-            {course && <div id="updateCourseDiv" className="mt-5 container">
+            {course && <div className="container">
                 <h2>Update Course</h2>
+
+                <div className="mt-5">
 
                 <form id="updateCourseForm" onSubmit={handleCourseUpdate}>
                     <input type="hidden" id="updateCourseId" value={course.id} />
@@ -66,6 +68,7 @@ const CourseUpdate = () => {
                     <button type="submit" className="btn btn-primary">Update Course</button>}
 
                 </form>
+                </div>
             </div>}
         </>
     );
