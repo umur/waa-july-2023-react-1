@@ -1,7 +1,7 @@
 package waa.springreactlab6.service;
 
-import waa.springreactlab6.domain.Course;
-import waa.springreactlab6.domain.Student;
+import waa.springreactlab6.entity.Course;
+import waa.springreactlab6.entity.Student;
 
 import java.util.List;
 
@@ -10,13 +10,13 @@ public interface StudentService {
 
     List<Student> findAll();
 
-    Student findById(Integer id);
+    Student findById(Long id);
 
     List<Student> getStudentsByMajor(String major);
 
-    List<Course> getCoursesByStudentId(int studentId);
+    List<Course> getCoursesByStudentId(Long studentId);
 
-    Student update(Integer id, Student course);
+    Student update(Long id, Student course);
 
-    void delete(Integer id);
+    void delete(Long id);
 }

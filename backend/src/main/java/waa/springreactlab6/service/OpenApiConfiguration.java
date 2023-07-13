@@ -21,10 +21,10 @@ public class OpenApiConfiguration {
                                         .in(SecurityScheme.In.HEADER)
                                         .name("Authorization"))
                 )
-                .info(new Info().title("Fortune Kings' WAA Lab 2 API").version("1.0")
+                .info(new Info().title("Fortune King's Spring Boot & React API").version("1.0")
                         .contact(contact())
                         .description(
-                                "WAA Lab 2 RESTful service using springdoc-openapi."));
+                                "WAA Lab 6 RESTful service using springdoc-openapi."));
     }
 
     private Contact contact() {

@@ -1,14 +1,20 @@
-package waa.springreactlab6.domain;
+package waa.springreactlab6.entity;
 
+import jakarta.persistence.*;
 import lombok.Data;
 import java.util.List;
 
 @Data
+@Entity
 public class Student {
-    private Integer id;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String major;
-    private List<Course> coursesTaken;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    private int studentId;
+
+    private String firstName, lastName, email, major;
+
+    @ManyToMany
+    private List<Course> courses;
 }

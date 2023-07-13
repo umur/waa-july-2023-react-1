@@ -1,9 +1,11 @@
 package waa.springreactlab6.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import waa.springreactlab6.domain.Course;
-import waa.springreactlab6.domain.Student;
+import org.springframework.web.server.ResponseStatusException;
+import waa.springreactlab6.entity.Course;
+import waa.springreactlab6.entity.Student;
 import waa.springreactlab6.repository.StudentRepository;
 
 import java.util.List;
@@ -16,11 +18,7 @@ public class StudentServiceImpl implements StudentService{
 
     @Override
     public Student create(Student student) {
-        if (student.getCoursesTaken() == null) throw new RuntimeException("Courses cannot be empty");
-        if (student.getMajor().isEmpty()) throw new RuntimeException("You must provide a major");
-        if (student.getEmail().isEmpty() || !student.getEmail().contains("@")) throw new RuntimeException("Invalid email");
-        if (student.getLastName().isEmpty() || student.getFirstName().isEmpty()) throw new RuntimeException("Invalid first name or last name");
-        return studentRepository.create(student);
+        return studentRepository.save(student);
     }
 
     @Override
@@ -29,27 +27,35 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
-    public Student findById(Integer id) {
-        return studentRepository.findById(id);
+    public Student findById(Long id) {
+        return studentRepository.findById(id).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Student with id: " + id + " not found"));
     }
 
     @Override
     public List<Student> getStudentsByMajor(String major) {
-        return studentRepository.getStudentsByMajor(major);
+        return studentRepository.findByMajor(major);
     }
 
     @Override
-    public List<Course> getCoursesByStudentId(int studentId) {
-        return studentRepository.getCoursesByStudentId(studentId);
+    public List<Course> getCoursesByStudentId(Long studentId) {
+        return studentRepository.findByStudentId(studentId);
     }
 
     @Override
-    public Student update(Integer id, Student student) {
-        return studentRepository.update(id, student);
+    public Student update(Long id, Student student) {
+        Student existingStudent = findById(id);
+        existingStudent.setStudentId(student.getStudentId());
+        existingStudent.setFirstName(student.getFirstName());
+        existingStudent.setLastName(student.getLastName());
+        existingStudent.setEmail(student.getEmail());
+        existingStudent.setMajor(student.getMajor());
+        existingStudent.setCourses(student.getCourses());
+        return studentRepository.save(existingStudent);
     }
 
     @Override
-    public void delete(Integer id) {
-        studentRepository.delete(id);
+    public void delete(Long id) {
+        studentRepository.deleteById(id);
     }
 }

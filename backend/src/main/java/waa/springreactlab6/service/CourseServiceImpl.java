@@ -1,8 +1,10 @@
 package waa.springreactlab6.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import waa.springreactlab6.domain.Course;
+import org.springframework.web.server.ResponseStatusException;
+import waa.springreactlab6.entity.Course;
 import waa.springreactlab6.repository.CourseRepository;
 
 import java.util.List;
@@ -15,9 +17,7 @@ public class CourseServiceImpl implements CourseService{
 
     @Override
     public Course create(Course course) {
-        if (course.getName().length() < 3  || course.getCode().length() < 3) throw new RuntimeException("Course name and code must be greater than 3 chars");
-        if (course.getId() < 0) throw new RuntimeException("Course ID must be an integer");
-        return courseRepository.create(course);
+        return courseRepository.save(course);
     }
 
     @Override
@@ -26,17 +26,22 @@ public class CourseServiceImpl implements CourseService{
     }
 
     @Override
-    public Course findById(Integer id) {
-        return courseRepository.findById(id);
+    public Course findById(Long id) {
+        return courseRepository.findById(id).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Course with id: "+id+" not found"));
     }
 
     @Override
-    public Course update(Integer id, Course course) {
-        return courseRepository.update(id, course);
+    public Course update(Long id, Course course) {
+        Course existingCourse = findById(id);
+        existingCourse.setName(course.getName());
+        existingCourse.setCode(course.getCode());
+        existingCourse.setStudents(course.getStudents());
+        return courseRepository.save(existingCourse);
     }
 
     @Override
-    public void delete(Integer id) {
-        courseRepository.delete(id);
+    public void delete(Long id) {
+        courseRepository.deleteById(id);
     }
 }
