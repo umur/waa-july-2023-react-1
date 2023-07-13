@@ -1,12 +1,11 @@
 import React, {useState} from 'react';
 import Products from './Products';
-import './idex.css';
 
 const Admin =() =>{
     const [products, setProducts]=useState([
-       {id:011, name:'phone', price: 1000.00},
-       {id:012, name:'computer', price: 1500.00},
-       {id:013, name:'book', price: 5.00}
+       {id:11, name:'phone', price: 1000.00},
+       {id:12, name:'computer', price: 1500.00},
+       {id:13, name:'book', price: 5.00}
     ]);
 
     const[selectedProduct,setSelectedProduct]= useState(null);
@@ -16,40 +15,41 @@ const Admin =() =>{
         setSelectedProduct(product);
     }
     const UpdateName= ()=>{
-        const updatedProducts=products.map(product =>{
-            if (productMessage.id ===selectedProduct.id){
-                return {...product, name, updatedname};
+        const updatedProducts = products.map(product =>{
+            if (product.id ===selectedProduct.id){
+                return {...products, updatedName};
             }
             return product;
         });
         setProducts(updatedProducts);
-        setSelectedProduct({...selectedProduct,name, updatedName});
+        setSelectedProduct({...setProducts, UpdateName});
 
     }
     const EditButton =()=>{
-        console.log('Edit Button for product:', selectedProduct);
+        console.log('Edit Button for product:', setProducts);
     }
     const DeleteButton = () => {
-        console.log('Delete Button for product:', selectedProduct);
-        const updatedProducts = products.filter(product => product.id !== selectedProduct.id);
+        console.log('Delete Button for product:', setProducts);
+        const updatedProducts = products.filter(product => product.id !== setProducts.id);
         setProducts(updatedProducts);
         setSelectedProduct(null);
       }
       return (
-        <div className="container">
+        <div>
           <h1>Admin</h1>
-          <Products products={products} onProductClick={ProductClick}
-                 updatedName={updatedname} />
-          {selectedProduct && (
+         
             <div className="product-details">
               <h2>Product Details</h2>
-              <h3><u>{selectedProduct.name}</u></h3>
-              <p>price: {selectedPrice.price}</p>
-              <p>Content: {selectedProduct.content}</p>
-              <button onClick={EditButton}>Edit</button>
-              <button onClick={DeleteButton}>Delete</button>
+              {products.map(p => (
+                <div className='prod' key={p.id}>
+                  <h3>{p.name}</h3>
+                  <p>price: {p.price}</p>
+                  <button onClick={EditButton}>Edit</button>
+                  <button onClick={DeleteButton}>Delete</button>
+                </div>
+              ))}
             </div>
-          )}
+          {/* )} */}
           <input
             type="text"
             value={updatedName}

@@ -1,11 +1,13 @@
 import React from 'react'
 
-const product = ({product, onclick}) =>{
+export default function Product(props){
+
     return (
-        <div onClick={(onClick(product))}>
-            <h3>{product.name}</h3>
-            <h3>{product.price}</h3>
+        <div>
+        <h4>{props.id}</h4>
+        <h2>{props.name}</h2>
+        <h3>{props.price}</h3>
+      
         </div>
     )
 }
-export default product

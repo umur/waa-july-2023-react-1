@@ -1,6 +1,10 @@
 import React from 'react'
+import Product from './Product'
 
-const products = ({products, onProductClick}) => {
+
+export default function Products(props){
+
+  const products = ({products, onProductClick}) => {
     return (
       <div className= "products-container">
           <h2>products</h2>
@@ -14,6 +18,7 @@ const products = ({products, onProductClick}) => {
           ))}
       </div>
     );
-  };
+}}
 
-  export default products
+
+  
