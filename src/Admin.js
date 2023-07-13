@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
 import Products from './Products';
+import axios from 'axios';
+
 
 const Admin =() =>{
     const [products, setProducts]=useState([
@@ -27,7 +29,22 @@ const Admin =() =>{
     }
     const EditButton =()=>{
         console.log('Edit Button for product:', setProducts);
-    }
+        axios.put(`http://localhost:8080/products/all'${selectedProduct.id}`, selectedProduct)
+      .then(response => {
+        const updatedProducts= products.map(post => {
+          if (post.id === selectedProduct.id) {
+            return response.data;
+          }
+          return post;
+        });
+        setProducts(updatedProducts);
+        setSelectedProduct(response.data);
+      })
+      .catch(error => {
+        console.log(error.message);
+      });
+  }
+    
     const DeleteButton = () => {
         console.log('Delete Button for product:', setProducts);
         const updatedProducts = products.filter(product => product.id !== setProducts.id);
