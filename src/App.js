@@ -1,6 +1,7 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Delete from './Delete';
 
 function App() {
   const [showTable, setShowTable] = useState(false);
@@ -54,6 +55,10 @@ function App() {
       console.error('Error adding student:', error);
     }
   };
+  const handleDelete = (data) => {
+    setTableData((prevState)=>[...prevState,data]);
+    setShowTable(true);
+  };
   useEffect(() => {
     const storedShowTable = localStorage.getItem('showTable');
     if (storedShowTable === 'true') {
@@ -85,7 +90,11 @@ function App() {
         <button onClick={getByMajorButtonClick}>Get by major</button>
      </div>
      <br></br>
-      <button onClick={getAllButtonClick}>Get all</button>
+     <div>
+      <Delete ToDelete={handleDelete} />
+    </div>
+     <br></br>
+      <button onClick={getAllButtonClick}>GetAll</button>
       {showTable && (
         <table>
           <thead>
