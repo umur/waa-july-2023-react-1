@@ -1,9 +1,35 @@
-import React from "react";
+import React, { ChangeEvent, useState } from "react";
 import SimpleInput from "../../generic/inputs/SimpleInput/SimpleInput";
 import CheckBox from "../../generic/inputs/CheckBox/CheckBox";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthProvider";
+import axios from "axios";
+interface Ilogin {
+  email: string;
+  password: string;
+}
 
 const Login = () => {
+  const { setAuth } = useAuth();
+  const [formDate, setFormData] = useState<Ilogin>({
+    email: "",
+    password: "string",
+  });
+
+  function handleChange(event: ChangeEvent<HTMLInputElement>) {
+    const filedName = event.target.name;
+    const tempFormDate = { ...formDate };
+    tempFormDate[filedName as keyof Ilogin] = event.target.value;
+    setFormData({ ...tempFormDate });
+  }
+
+  async function submit(event: MouseEvent): Promise<void> {
+    event.preventDefault();
+    const response = await axios.post("http://localhost:8080/api/v1/auth/login", { ...formDate });
+    setAuth(response.data);
+    return;
+  }
+
   return (
     <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -26,7 +52,9 @@ const Login = () => {
               type="email"
               placeholder="email"
               label="Email"
-            ></SimpleInput>
+              value={formDate.email}
+              onChange={handleChange}
+            />
 
             <SimpleInput
               id="password"
@@ -34,10 +62,12 @@ const Login = () => {
               type="password"
               placeholder="password"
               label="Password"
-            ></SimpleInput>
+              value={formDate.password}
+              onChange={handleChange}
+            />
 
             <div className="flex items-center justify-between">
-              <CheckBox id="remember-me" name="remember-me" label="Remember me" />
+              {/* <CheckBox id="remember-me" name="remember-me" label="Remember me" /> */}
 
               {/* <div className="text-sm leading-6">
                 <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
@@ -50,6 +80,7 @@ const Login = () => {
               <button
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                onClick={(e) => submit(e)}
               >
                 Sign in
               </button>

@@ -1,4 +1,4 @@
-import { createContext, useState, ReactNode } from "react";
+import { createContext, useState, ReactNode, useContext } from "react";
 import { User } from "../models/User";
 
 interface IAuthContext {
@@ -8,7 +8,11 @@ interface IAuthContext {
 
 export const AuthContext = createContext<IAuthContext | null>(null);
 
-export const ProvideAuth = ({ children }: { children: ReactNode }) => {
+export const useAuth = () => {
+  return useContext(AuthContext);
+};
+
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const getSession = (): User | any => {
     const localStorageUser = localStorage.getItem("session");
     if (!localStorageUser) {

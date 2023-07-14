@@ -10,6 +10,7 @@ interface SimpleMenuInputProps {
   name: string;
   placeholder: string;
   options: IOption[];
+  value: string;
   label?: string;
   hint?: string;
   className?: string;
@@ -22,6 +23,7 @@ const SimpleSelectMenu: FC<SimpleMenuInputProps> = ({
   placeholder,
   options,
   label,
+  value,
   hint,
   className,
   onChange,

@@ -3,17 +3,19 @@ import React, { FC } from "react";
 interface ICheckBoxProps {
   id: string;
   name: string;
+  value: string;
   label?: string;
   hint?: string;
   onChange?: (value: any) => void;
 }
 
-const CheckBox: FC<ICheckBoxProps> = ({ id, name, label, hint, onChange }) => {
+const CheckBox: FC<ICheckBoxProps> = ({ id, name, label, value, hint, onChange }) => {
   return (
     <div className="flex items-center gap-2">
       <input
         id={id}
         name={name}
+        value={value}
         type="checkbox"
         onChange={onChange}
         className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
