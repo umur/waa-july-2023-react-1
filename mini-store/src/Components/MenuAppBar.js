@@ -42,7 +42,7 @@ export default function MenuAppBar() {
           label={auth ? 'Logout' : 'Login'}
         />
       </FormGroup> */}
-      <AppBar position="static"sx={{ bgcolor: "#2c387e" }} >
+      <AppBar position="static"sx={{ bgcolor: "#D2A517" }} >
         <Toolbar>
           <IconButton
             size="large"

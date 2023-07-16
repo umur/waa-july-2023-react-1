@@ -1,10 +1,16 @@
-import * as React from 'react';
+import React,{useEffect, useState} from 'react';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 
 
-export default function ProductDetail() {
+export default function ProductDetail(props) {
+    const initialProduct={name:"",price:0,rating:0,review:""}
+const [existedProduct,setProduct] =useState(initialProduct)
+
+useEffect(()=>{
+    setProduct(props.existedproduct===null?props.existedproduct:initialProduct)
+},[])
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
@@ -16,9 +22,10 @@ export default function ProductDetail() {
             required
             id="name"
             name="name"
-            label="Product name"
+            label="name"
             fullWidth
             variant="standard"
+            defaultValue={existedProduct.name}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -29,6 +36,8 @@ export default function ProductDetail() {
             label="price"
             fullWidth
             variant="standard"
+            defaultValue={existedProduct.price}
+
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -39,6 +48,8 @@ export default function ProductDetail() {
             label="rating"
             fullWidth
             variant="standard"
+            defaultValue={existedProduct.rating}
+
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -48,6 +59,8 @@ export default function ProductDetail() {
             label="review"
             fullWidth
             variant="standard"
+            defaultValue={existedProduct.review}
+
           />
         </Grid>
      

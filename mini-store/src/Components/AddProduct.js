@@ -54,7 +54,7 @@ export default function AddProduct() {
           </Typography> */}
          
             <React.Fragment>
-                <ProductDetail/>
+                <ProductDetail existedProduct={null}/>
                 <Button
                   variant="contained"
                   sx={{ mt: 3, ml: 1 }}

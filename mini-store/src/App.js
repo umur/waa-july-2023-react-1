@@ -1,36 +1,33 @@
+import AExamole from "./Components/A";
+import BExamole from "./Components/B";
+import '../src/Style/App.css';
+ 
+
+import {Link,Route, Routes } from 'react-router-dom';
 import SignIn from "./Components/SignIn";
 import SignUp from "./Components/SignUp";
-import ProductTable from "./Components/ProductTable";
+import Home from "./Components/Home";
 import AddProduct from "./Components/AddProduct";
-import MenuAppBar  from "./Components/MenuAppBar";
-import { Button,Box } from "@mui/material";
-const addProduct=()=>{
-  return(
-<><AddProduct/></>
-  );
+import UpdateProduct from "./Components/UpdateProduct";
 
-}
+
+
 
 function App() {
   return (
-  <>
-  <MenuAppBar/>
+<>
+     <Routes>
+     <Route path="/" element={<SignIn />}/>
+      <Route path="/signUp" element={<SignUp />}/>
+      <Route path="/home" element={<Home />}/>
+      <Route path="/addProduct" element={<AddProduct />}/>
+      <Route path="/products/:id" element={<UpdateProduct />}/>
 
-  <div style={{paddingTop:"30px"}}></div>
-<Box 
-   display="flex"
-   justifyContent="flex-end"
-   alignItems="flex-end"
-   paddingBottom={1}
-   paddingRight={27}
->
-<Button onClick={addProduct} style={{backgroundColor:"#ffff"}} variant="outlined" alignConten="end">Add Product</Button>
-
-</Box>
+      
 
 
-  <ProductTable/>
-  </>
+    </Routes>
+    </>
   );
 }
 

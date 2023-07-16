@@ -9,17 +9,19 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Button, Menu, MenuItem } from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import { useNavigate } from 'react-router-dom';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: "#5d6382",
+    backgroundColor: "#97729D",
     color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
   },
 }));
-function PositionedMenu() {
+function PositionedMenu(props) {
+    const updateProduct=useNavigate();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -28,6 +30,9 @@ function PositionedMenu() {
     const handleClose = () => {
       setAnchorEl(null);
     };
+    const handleDelete=(id)=>{
+        //TODO send delte api request
+    }
   
     return (
       <div>
@@ -55,8 +60,8 @@ function PositionedMenu() {
             horizontal: 'left',
           }}
         >
-          <MenuItem onClick={handleClose}>Delete</MenuItem>
-          <MenuItem onClick={handleClose}>Update</MenuItem>
+          <MenuItem onClick={()=>handleDelete(props.id)}>Delete</MenuItem>
+          <MenuItem onClick={()=>{updateProduct(`/products/${props.id}`);handleClose()}}>Update</MenuItem>
         </Menu>
       </div>
     );
@@ -71,16 +76,16 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
+function createData(id,name, calories, fat, carbs, protein) {
+  return {id, name, calories, fat, carbs, protein };
 }
 
 const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
+  createData(1,'Frozen yoghurt', 159, 6.0, 24, 4.0),
+  createData(2,'Ice cream sandwich', 237, 9.0, 37, 4.3),
+  createData(3,'Eclair', 262, 16.0, 24, 6.0),
+  createData(4,'Cupcake', 305, 3.7, 67, 4.3),
+  createData(5,'Gingerbread', 356, 16.0, 49, 3.9),
 ];
 
 export default function CustomizedTables() {
@@ -103,7 +108,7 @@ export default function CustomizedTables() {
               </StyledTableCell>
               <StyledTableCell align="right">{row.calories}</StyledTableCell>
               <StyledTableCell align="right">{row.fat}</StyledTableCell>
-              <StyledTableCell align="right"><PositionedMenu/></StyledTableCell>
+              <StyledTableCell align="right"><PositionedMenu id={row.id}/></StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>

@@ -1,43 +1,53 @@
-import * as React from 'react';
+import React,{useState}  from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
+
+import { Link,useNavigate } from "react-router-dom";
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import axios from 'axios';
 
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
 
 export default function SignUp() {
-  const handleSubmit = (event) => {
+  const navigate = useNavigate();
+  const [error,setError] = useState(false);
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
+      firstname: data.get('firstname'),
+      lastname: data.get('lastname'),
       email: data.get('email'),
-      password: data.get('password'),
-    });
+      password: data.get('password')
+    })
+
+    try {
+      const response = await axios.post("/uaa/signup", {
+        firstname: data.get('firstname'),
+        lastname: data.get('lastname'),
+        email: data.get('email'),
+        password: data.get('password')
+      });
+      const token = response.data.token;
+
+      // Save the token to localStorage or any other desired location
+      localStorage.setItem('token', token);
+
+      navigate("/");
+    } catch (error) {
+      setError(true)
+    }
   };
 
   return (
@@ -102,7 +112,7 @@ export default function SignUp() {
                   autoComplete="new-password"
                 />
               </Grid>
-           
+
             </Grid>
             <Button
               type="submit"
@@ -112,7 +122,13 @@ export default function SignUp() {
             >
               Sign Up
             </Button>
-            
+            <Grid container >
+              <Grid item>
+                <Link to="/" variant="body2">
+                  Already have an account? Sign in
+                </Link>
+              </Grid>
+            </Grid>
           </Box>
         </Box>
       </Container>
