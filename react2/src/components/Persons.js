@@ -1,21 +1,44 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import CreatePerson from "./CreatePerson";
 import axios from "axios";
+import { Link, Outlet ,useNavigate } from "react-router-dom";
 
-export default function Persons(props) {
+export default function Persons() {
+  const navigate = useNavigate();
   const [isCreating, setIsCreating] = useState(false);
-  var persons = props.persons;
+  const initialPersons = [];
+
+  const [persons, setPersons] = useState(initialPersons);
+
+  const getPersons = async () => {
+    // send request
+    const result = await axios.get("http://localhost:8080/persons");
+    console.log(result);
+    // update state
+    setPersons(result.data);
+  }
+
+  useEffect(() => {
+    getPersons();
+    return () => {
+      // cleanup
+    }
+  }, [])
 
   const handleEdit = (personId) => {
-    // Perform any necessary actions for editing
+    const person = persons.find((person) => person.id === personId);
+    if (person) {
+      // Redirect to the EditPerson component with the person's data
+      navigate(`edit/${person.id}`, { state: { person } });
+    }
   };
 
   const handleDelete = async (personId) => {
     try{
         console.log("Id "+personId);
         await axios.delete(`http://localhost:8080/persons/${personId}`);
-        persons = props.persons.filter((person) => person.id !== personId);
-        
+        var pers = persons.filter((person) => person.id !== personId);
+        setPersons(pers);
       
     } catch(error){
         console.error(error);
@@ -28,10 +51,9 @@ export default function Persons(props) {
   };
 
   return (
+    <>
     <div style={{ display: 'flex', justifyContent: 'center' }}>
-      {isCreating ? (
-        <CreatePerson />
-      ) : (
+      
         <table>
           <thead>
             <tr>
@@ -50,15 +72,21 @@ export default function Persons(props) {
                 <td>
                   <button onClick={() => handleDelete(person.id)}>Delete</button>
                 </td>
+                <td>
+                  <button onClick={() => handleEdit(person.id)}>Edit</button>
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
-      )}
-
-      {!isCreating && (
-        <button onClick={handleCreate}>Create Person</button>
-      )}
+        
+        
     </div>
+    <nav>
+          <Link to='create'>Create Person</Link>
+        </nav>
+        <Outlet/>
+    </>
+    
   );
 }

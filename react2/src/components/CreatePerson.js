@@ -11,8 +11,8 @@ export default function CreatePerson() {
 
 
 
-    const onChanged = (event)=>{
-        const copy= {...personState};
+    const onChanged = (event) => {
+        const copy = { ...personState };
         copy[event.target.name] = event.target.value;
         setPersonState(copy);
     }
@@ -23,14 +23,14 @@ export default function CreatePerson() {
     }
 
 
-    const createPerson= async () => {
-try{
-    const result = await axios.post("http://localhost:8080/persons",personState);
-    console.log(result)
-} catch(error){
-    console.error(error);
-}
-        
+    const createPerson = async () => {
+        try {
+            const result = await axios.post("http://localhost:8080/persons", personState);
+            console.log(result);
+        } catch (error) {
+            console.error(error);
+        }
+
     }
 
 
@@ -57,7 +57,7 @@ try{
                 name="email"
                 onChange={onChanged}
                 value={personState.email}
-                />
+            />
 
             <input
                 type="button"
